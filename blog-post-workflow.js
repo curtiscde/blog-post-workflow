@@ -233,6 +233,7 @@ Promise.allSettled(promiseArray).then((results) => {
       return b.date - a.date;
     });
   }
+  core.info('slice the max count')
   // Slicing with the max count
   postsArray = postsArray.slice(0, TOTAL_POST_COUNT);
   if (postsArray.length > 0) {
@@ -247,6 +248,7 @@ Promise.allSettled(promiseArray).then((results) => {
       const constEmojiArr = getParameterisedTemplate(template, 'emojiKey');
       const postListMarkdown = postsArray.reduce((acc, cur, index) => {
         if (template === 'default') {
+          core.info('using default template')
           // Default template: - [$title]($url)
           return acc + `\n- [${cur.title}](${cur.url})` + (((index + 1) === postsArray.length) ? '\n' : '');
         } else {
@@ -306,6 +308,7 @@ Promise.allSettled(promiseArray).then((results) => {
         process.exit(jobFailFlag ? 1 : 0);
       }
 
+      core.info('writing to each readme file');
       // Writing to each readme file
       let changedReadmeCount = 0;
       README_FILE_PATH_LIST.forEach((README_FILE_PATH) => {
@@ -318,6 +321,7 @@ Promise.allSettled(promiseArray).then((results) => {
           changedReadmeCount = changedReadmeCount + 1;
         }
       });
+
 
       if (changedReadmeCount > 0) {
         if (!process.env.TEST_MODE) {
