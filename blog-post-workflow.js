@@ -144,10 +144,10 @@ feedList.forEach((siteUrl) => {
               let customTags = {};
               Object.keys(CUSTOM_TAGS).forEach((tag) => {
                 if (item[tag]) {
-                  Object.assign(customTags, {[tag]: item[tag]});
+                  Object.assign(customTags, { [tag]: item[tag] });
                 }
               });
-              const categories = item.categories ?  item.categories : [];
+              const categories = item.categories ? item.categories : [];
               let post = {
                 title: item.title.trim(),
                 url: item.link.trim(),
@@ -185,7 +185,7 @@ feedList.forEach((siteUrl) => {
               // Doing HTML encoding at last ref: #117
               const disableHtmlEncoding = core.getInput('disable_html_encoding') !== 'false';
               if (!disableHtmlEncoding && post) {
-                Object.keys(post).forEach((key)=> {
+                Object.keys(post).forEach((key) => {
                   if (typeof post[key] === 'string' && key !== 'url') {
                     post[key] = escapeHTML(post[key]);
                   }
@@ -207,6 +207,7 @@ Promise.allSettled(promiseArray).then((results) => {
     if (result.status === 'fulfilled') {
       // Succeeded
       core.info(runnerNameArray[index] + ' runner succeeded. Post count: ' + result.value.length);
+      core.info('add feed name to the items')
       // Adds feed name to the items
       if (typeof feedNamesList[index] !== undefined && feedNamesList[index]) {
         result.value = result.value.map((item) => {
@@ -237,9 +238,9 @@ Promise.allSettled(promiseArray).then((results) => {
   if (postsArray.length > 0) {
     try {
       if (!process.env.TEST_MODE) {
-        await exec('git', ['config', 'pull.rebase', 'true'], {stdio: ['pipe', 'pipe', 'pipe']});
+        await exec('git', ['config', 'pull.rebase', 'true'], { stdio: ['pipe', 'pipe', 'pipe'] });
         // Pulling the latest changes from upstream
-        await exec('git', ['pull'], {stdio: ['pipe', 'pipe', 'pipe']});
+        await exec('git', ['pull'], { stdio: ['pipe', 'pipe', 'pipe'] });
       }
       const template = core.getInput('template');
       const randEmojiArr = getParameterisedTemplate(template, 'randomEmoji');
@@ -297,11 +298,11 @@ Promise.allSettled(promiseArray).then((results) => {
         // Sets output as output as `results` variable in github action
         core.info('outputOnly mode: set `results` variable. Readme not committed.');
         core.setOutput('results', postsArray);
-        const outputFilePath = path.join('/','tmp', 'blog_post_workflow_output.json');
-        if(fs.existsSync(outputFilePath)) {
+        const outputFilePath = path.join('/', 'tmp', 'blog_post_workflow_output.json');
+        if (fs.existsSync(outputFilePath)) {
           fs.rmSync(outputFilePath);
         }
-        fs.writeFileSync(outputFilePath, JSON.stringify(postsArray), { encoding: 'utf-8'});
+        fs.writeFileSync(outputFilePath, JSON.stringify(postsArray), { encoding: 'utf-8' });
         process.exit(jobFailFlag ? 1 : 0);
       }
 
