@@ -238,11 +238,13 @@ Promise.allSettled(promiseArray).then((results) => {
   postsArray = postsArray.slice(0, TOTAL_POST_COUNT);
   if (postsArray.length > 0) {
     try {
+      core.info('git pull')
       if (!process.env.TEST_MODE) {
         await exec('git', ['config', 'pull.rebase', 'true'], { stdio: ['pipe', 'pipe', 'pipe'] });
         // Pulling the latest changes from upstream
         await exec('git', ['pull'], { stdio: ['pipe', 'pipe', 'pipe'] });
       }
+      core.info('git pull complete')
       const template = core.getInput('template');
       const randEmojiArr = getParameterisedTemplate(template, 'randomEmoji');
       const constEmojiArr = getParameterisedTemplate(template, 'emojiKey');
